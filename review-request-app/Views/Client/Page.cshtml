@@ -1,0 +1,29 @@
+﻿@model review_request_app.Core.Domain.Client
+
+@{
+    ViewData["Title"] = "Client-Details";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<div class = "content text-center mt-5">
+    <div class = "logo mb-5">
+        <img src = "~/uploadFolder/@Model.LogoPath" class="w-25"/>
+    </div>
+    <div class = "description mb-4">
+        <p>
+            @Model.Description
+        </p>
+    </div>
+    <div class = "link">
+        <p class = "mb-4">
+            <a style="background-color:#4285F4;" href = "@Model.GoogleReviewLink" class = "text-light rounded-pill py-2 px-5 google-link mb-1 text-center">
+                <i class="fa-brands fa-google mr-2"></i> <span>Review us on Google</span>
+            </a>
+        </p>
+        <p>
+        <a href = "@Model.FacebookReviewLink" style="background-color:#4267B2;" class = "text-light rounded-pill py-2 px-5 facebook-link text-center">
+             <i class="fa-brands fa-facebook-square mr-2"></i> <span>Review us on Facebook</span>
+        </a>
+        </p>
+    </div>
+</div>

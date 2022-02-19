@@ -1,0 +1,55 @@
+﻿@model IEnumerable<review_request_app.Core.Domain.Client>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="dashboard-content">
+   <p class="text-right">
+    <a class="btn btn-primary" asp-controller = "Client" asp-action="Create">Add Client</a>
+   </p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                <a asp-action="details" asp-controller = "Client" asp-route-id = "@item.Id">
+                    @Html.DisplayFor(modelItem => item.BusinessName)
+                </a>
+            </td>
+            <td>
+                <button class = "btn btn-primary" data-toggle="modal" data-target="#modal@(item.Id)">Get Page Link</button>
+                <div class="modal fade" id="modal@(item.Id)" tabindex="-1" role="dialog" aria-labelledby="linkmodal" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class="text-center">https://localhost:44338/client/page/@item.Id</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

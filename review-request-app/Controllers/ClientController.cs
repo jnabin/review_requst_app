@@ -98,5 +98,15 @@ namespace review_request_app.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            Client client = new Client { Id = id };
+            _unitOfWork.Clients.Remove(client);
+            _unitOfWork.Complete();
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

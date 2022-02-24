@@ -6,6 +6,7 @@ using review_request_app.Core.Domain;
 using review_request_app.Models;
 using System;
 using System.IO;
+using System.Net;
 
 namespace review_request_app.Controllers
 {
@@ -46,7 +47,9 @@ namespace review_request_app.Controllers
 
                 if (model.Logo != null)
                 {
-                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploadFolder");
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploadFolder");
+                    if (!Directory.Exists(uploadsFolder))
+                        Directory.CreateDirectory(uploadsFolder);
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Logo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                     model.Logo.CopyTo(new FileStream(filePath, FileMode.Create));
@@ -78,7 +81,9 @@ namespace review_request_app.Controllers
 
                 if (model.Logo != null)
                 {
-                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploadFolder");
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploadFolder");
+                    if (!Directory.Exists(uploadsFolder))
+                        Directory.CreateDirectory(uploadsFolder);
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Logo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                     model.Logo.CopyTo(new FileStream(filePath, FileMode.Create));

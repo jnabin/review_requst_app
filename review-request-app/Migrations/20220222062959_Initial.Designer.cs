@@ -10,7 +10,7 @@ using review_request_app.Data;
 namespace review_request_app.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220219051106_Initial")]
+    [Migration("20220222062959_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

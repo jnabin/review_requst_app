@@ -5,13 +5,14 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
-<div class = "content text-center mt-5">
-    <div class = "logo mb-5">
-        <img src = "https://bsite.net/ngrx/wwwroot/uploadFolder/@Model.LogoPath" class="w-25"/>
+<div class = "page-content text-center mt-5 p-3">
+    <div class = "logo mb-3">
+        <img src = "@ViewBag.Image" class="w-25"/>
     </div>
+    <hr />
     <div class = "description mb-4">
         <p>
-            @Model.Description
+            @Html.Raw(@Model.Description)
         </p>
     </div>
     <div class = "link">

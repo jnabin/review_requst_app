@@ -6,7 +6,7 @@ using review_request_app.Core.Domain;
 using review_request_app.Models;
 using System;
 using System.IO;
-using System.Net;
+using System.Threading.Tasks;
 
 namespace review_request_app.Controllers
 {
@@ -33,27 +33,38 @@ namespace review_request_app.Controllers
         public IActionResult Page(int id)
         {
             if(id > 0) {
-                return View(_unitOfWork.Clients.Get(id));
+                var model = _unitOfWork.Clients.Get(id);
+                ViewBag.Image = ViewImage(model.Logo);
+                return View(model);
             }
             return RedirectToAction("Index", "Home");
         } 
         
         [HttpPost]
-        public IActionResult Create(ClientViewModel model)
+        public async Task<IActionResult> Create(ClientViewModel model)
         {
             if (ModelState.IsValid)
             {
-                string uniqueFileName = null;
-
-                if (model.Logo != null)
+                if(model.LogoFile == null)
                 {
-                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploadFolder");
-                    if (!Directory.Exists(uploadsFolder))
-                        Directory.CreateDirectory(uploadsFolder);
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Logo.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    model.Logo.CopyTo(new FileStream(filePath, FileMode.Create));
-                    model.LogoPath = uniqueFileName;
+                    ModelState.AddModelError("LogoFile", "Logo is required");
+                    return View(model);
+                }
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    await model.LogoFile.CopyToAsync(memoryStream);
+
+                    // Upload the file if less than 2 MB
+                    if (memoryStream.Length < 2097152)
+                    {
+                        model.Logo = memoryStream.ToArray();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("File", "The file is too large.");
+                        return View(model);
+                    }
                 }
 
                 _unitOfWork.Clients.Add(model);
@@ -68,33 +79,38 @@ namespace review_request_app.Controllers
         public IActionResult Details(int id)
         {
             ClientViewModel model = _unitOfWork.Clients.Get(id);
+            ViewBag.Image = ViewImage(model.Logo);
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Details(ClientViewModel model)
+        public async Task<IActionResult> Details(ClientViewModel model)
         {
             if (ModelState.IsValid)
             {
-                string uniqueFileName = null;
-
-                if (model.Logo != null)
+                if(model.LogoFile != null)
                 {
-                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploadFolder");
-                    if (!Directory.Exists(uploadsFolder))
-                        Directory.CreateDirectory(uploadsFolder);
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Logo.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    model.Logo.CopyTo(new FileStream(filePath, FileMode.Create));
-                    model.LogoPath = uniqueFileName;
-                }
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await model.LogoFile.CopyToAsync(memoryStream);
 
+                        // Upload the file if less than 2 MB
+                        if (memoryStream.Length < 2097152)
+                        {
+                            model.Logo = memoryStream.ToArray();
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("File", "The file is too large.");
+                            return View(model);
+                        }
+                    }
+                }
                 _unitOfWork.Clients.Update(model);
                 _unitOfWork.Complete();
                 return RedirectToAction("Index", "Home");
             }
-
             return View(model);
         }
 
@@ -106,6 +122,17 @@ namespace review_request_app.Controllers
             _unitOfWork.Complete();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [NonAction]
+        private string ViewImage(byte[] arrayImage)
+
+        {
+
+            string base64String = Convert.ToBase64String(arrayImage, 0, arrayImage.Length);
+
+            return "data:image/png;base64," + base64String;
+
         }
 
     }

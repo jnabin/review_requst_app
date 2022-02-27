@@ -12,7 +12,7 @@ namespace review_request_app.Models
         [Required]
         public string BusinessName { get; set; }
 
-        public IFormFile Logo { get; set; }
+        public IFormFile LogoFile { get; set; }
 
         [Required]
         public string Description { get; set; }
@@ -22,7 +22,7 @@ namespace review_request_app.Models
 
         [Required]
         public string FacebookReviewLink { get; set; }
-        public string LogoPath { get; set; }
+        public byte[] Logo { get; set; }
 
         public static implicit operator ClientViewModel(Client client)
         {
@@ -30,7 +30,7 @@ namespace review_request_app.Models
             {
                 Id = client.Id,
                 BusinessName = client.BusinessName,
-                LogoPath = client.LogoPath,
+                Logo = client.Logo,
                 Description = client.Description,
                 FacebookReviewLink = client.FacebookReviewLink,
                 GoogleReviewLink = client.GoogleReviewLink
@@ -43,7 +43,7 @@ namespace review_request_app.Models
             {
                 Id = client.Id,
                 BusinessName = client.BusinessName,
-                LogoPath = client.LogoPath,
+                Logo = client.Logo,
                 Description = client.Description,
                 FacebookReviewLink = client.FacebookReviewLink,
                 GoogleReviewLink = client.GoogleReviewLink

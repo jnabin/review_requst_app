@@ -11,11 +11,12 @@ namespace review_request_app.Data.EntityConfigurations
             builder.Property(c => c.Description)
                 .IsRequired()
                 .HasMaxLength(5000);
-            
-            builder.Property(c => c.LogoPath)
+
+            builder.Property(c => c.Logo)
                 .IsRequired()
-                .HasMaxLength(300);
-            
+                .HasColumnType("varbinary")
+                .HasMaxLength(8000);
+
             builder.Property(c => c.GoogleReviewLink)
                 .IsRequired()
                 .HasMaxLength(400);

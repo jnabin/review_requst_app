@@ -242,10 +242,10 @@ namespace review_request_app.Migrations
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
 
-                    b.Property<string>("LogoPath")
+                    b.Property<byte[]>("Logo")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("varbinary(8000)");
 
                     b.HasKey("Id");
 

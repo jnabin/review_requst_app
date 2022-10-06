@@ -11,6 +11,6 @@
     <WebStackScaffolding_IsPartialViewSelected>False</WebStackScaffolding_IsPartialViewSelected>
     <WebStackScaffolding_IsReferencingScriptLibrariesSelected>True</WebStackScaffolding_IsReferencingScriptLibrariesSelected>
     <WebStackScaffolding_DbContextTypeFullName>review_request_app.Data.ApplicationDbContext</WebStackScaffolding_DbContextTypeFullName>
-    <NameOfLastUsedPublishProfile>C:\Users\ASUS\Desktop\review-request-app\review-request-app\Properties\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>E:\project\review_requst_app\review-request-app\Properties\PublishProfiles\FolderProfile1.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
